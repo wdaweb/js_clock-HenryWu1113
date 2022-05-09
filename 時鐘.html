@@ -15,32 +15,93 @@
             height: 100%;
             margin: 0;
             padding: 0;
-        }
-
-        body {
-            background: linear-gradient(rgba(0, 0, 0), rgb(6, 45, 90));
-            /* background-image: linear-gradient(rgba(0, 150, 255), rgb(255, 255, 255)); */
-            animation: bcChange 2s infinite linear;
             overflow: hidden;
         }
 
-        .container {
-            width: 600px;
-            height: 1000px;
-            margin: auto;
+        /* 
+        body {
+            background: linear-gradient(rgba(0, 0, 0), rgb(6, 45, 90));
+            animation: bcChange 2s infinite linear;
+            overflow: hidden;
+        } */
 
+        #bg {
+            width: 100%;
+            height: 100%;
+            background-color: #110019;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center center;
+            background-image: none;
             position: relative;
-
+            overflow: hidden;
         }
 
-        @keyframes bcChange {
-            50% {}
+        .starshine {
+            position: absolute;
+            /* width: 50px;
+            height: 50px; */
+            background-image: url('./star.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+
+            animation: glitter 6s infinite linear 0s both;
+        }
+
+        .small {
+            width: 20px;
+            height: 20px;
+        }
+
+        .medium {
+            width: 30px;
+            height: 30px;
+        }
+
+        .large {
+            width: 50px;
+            height: 50px;
+        }
+
+        /*CSS3 keyframes for glittering effect*/
+        @keyframes glitter {
+            0% {
+                transform: scale(0.3) rotate(0deg);
+                opacity: 0;
+            }
+
+            25% {
+                transform: scale(1) rotate(360deg);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(0.3) rotate(720deg);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(0.3) rotate(0deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            width: 900px;
+            height: 900px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            overflow: hidden;
+            transform: translate(-50%, -50%);
+
         }
 
         #clock {
             width: 600px;
             height: 600px;
             background-repeat: no-repeat;
+            border: 3px solid rgba(255, 255, 255, 0.6);
 
             background-color: #e493d0;
             background-image: radial-gradient(closest-side, rgba(235, 105, 78, 1), rgba(235, 105, 78, 0)),
@@ -52,7 +113,9 @@
             background-position:
                 -109px -269px,
                 359px 40px,
-                -126px 100px;
+                -126px 100px,
+                -100px -219px,
+                259px 0px;
 
             background-size: 800px 800px;
 
@@ -235,7 +298,7 @@
             font-size: 5rem;
             position: absolute;
             left: 50%;
-            bottom: 20%;
+            bottom: 15%;
             transform: translate(-50%, 50%);
             font-family: 'Parisienne', cursive;
             -webkit-box-reflect: below -40px linear-gradient(transparent, rgba(0, 0, 0, 0.3));
@@ -321,6 +384,7 @@
 </head>
 
 <body>
+    <div id="bg"></div>
     <div class="container">
         <div id="clock">
             <div id="second"></div>
@@ -341,6 +405,7 @@
     </div>
 
 
+
     <script>
         const second = document.getElementById('second')
         const minute = document.getElementById('minute')
@@ -359,14 +424,33 @@
             second.style.transform = `translate(-50%, -50%) rotate(${s * 6 - 90}deg)`
 
             for (let i = 0; i < time.length; i++) {
-                time[i].innerText = t[i]
-                time[i].innerText = time[i].innerText.padStart(2, 0)
+                time[i].innerText = `${t[i]}`.padStart(2, '0')
+                // time[i].innerText = time[i].innerText.padStart(2, 0)
             }
         }
 
+        const bg = document.getElementById('bg')
+        for (let i = 0; i < 500; i++) {
+            const delay = `${Math.random() * 20}s`
+            const el = document.createElement('div')
+            el.className = 'starshine'
+            el.style.top = (Math.random() * 100) + '%'
+            el.style.left = (Math.random() * 100) + '%'
+            el.style.animationDelay = delay
+            bg.appendChild(el)
+
+            if (i % 2 === 0) {
+                el.classList.add('small')
+            } else if (i % 3 === 0) {
+                el.classList.add('medium')
+            } else {
+                el.classList.add('large')
+            }
+        }
 
         setInterval(setDate, 1000)
         setDate()
+
     </script>
 </body>
 
